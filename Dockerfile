@@ -1,4 +1,6 @@
 FROM nginx:latest
-RUN apt-get install -y tmpreaper
+USER root
+
 SHELL ["/bin/bash", "-c"]
+RUN apt-get -y install tmpreaper
 RUN echo '* * * * * root echo "Hello World at today" >> /root/greetings.txt' >> /etc/crontab
