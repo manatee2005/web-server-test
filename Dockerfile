@@ -1,12 +1,5 @@
 FROM php:8.1-apache
 
-RUN apt-get install tmpreaper
-
-
-
-
-FROM php:8.1-apache
-
 ###################################
 # ビルド時にのみ使用する変数定義
 # （ビルド後は残りません）
@@ -41,12 +34,12 @@ RUN apt-get update && apt-get install -y \
 # + Rewrite機能の有効化（rewrite.load）
 # + apache
 ###################################
-RUN git clone https://github.com/phpredis/phpredis.git /usr/src/php/ext/redis \
-    && docker-php-ext-install redis pdo_pgsql \
-    && mv /etc/apache2/mods-available/rewrite.load /etc/apache2/mods-enabled \
-    && echo "ServerName localhost" >> /etc/apache2/apache2.conf \
-    && echo "Listen 8080" >> /etc/apache2/apache2.conf \
-    && echo "Header set X-Frame-Options: sameorigin" >> /etc/apache2/conf-available/security.conf
+# RUN git clone https://github.com/phpredis/phpredis.git /usr/src/php/ext/redis \
+#     && docker-php-ext-install redis pdo_pgsql \
+#     && mv /etc/apache2/mods-available/rewrite.load /etc/apache2/mods-enabled \
+#     && echo "ServerName localhost" >> /etc/apache2/apache2.conf \
+#     && echo "Listen 8080" >> /etc/apache2/apache2.conf \
+#     && echo "Header set X-Frame-Options: sameorigin" >> /etc/apache2/conf-available/security.conf
 
 ###################################
 # cron
