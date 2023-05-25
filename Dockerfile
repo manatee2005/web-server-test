@@ -52,7 +52,8 @@ RUN apt-get update && apt-get install -y \
 RUN echo '* * * * * root echo "Hello World at today" >> /root/greetings.txt' >> /etc/crontab
 
 # CMD ["crond"]
-CMD ["/etc/init.d/cron","status"]
+# CMD ["/etc/init.d/cron","status"]
+CMD cron && docker-php-entrypoint php-fpm
 
 ##################################
 # pnp.ini 変更/追加キー情報反映
