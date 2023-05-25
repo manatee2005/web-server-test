@@ -51,7 +51,7 @@ RUN apt-get update && apt-get install -y \
 # test
 RUN echo '* * * * * root echo "Hello World at today" >> /root/greetings.txt' >> /etc/crontab
 
-CMD ["/usr/sbin/crond"]
+CMD crond
 
 ##################################
 # pnp.ini 変更/追加キー情報反映
