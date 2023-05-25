@@ -40,7 +40,7 @@ RUN apt-get update && apt-get install -y \
 #     echo 'dev-user    ALL=(ALL)    NOPASSWD:ALL' >> /etc/sudoers.d/dev-user
 
 # PAMの設定
-RUN sed -i -e '/pam_loginuid.so/s/^/#/' /etc/pam.d/crond
+RUN sed -i -e '/pam_loginuid.so/s/^/#/' /etc/pam.d/cron
 
 # cronの個別コマンドの設定ファイルを追加
 # ADD ./cron.d /etc/cron.d/
