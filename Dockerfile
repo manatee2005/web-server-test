@@ -1,5 +1,5 @@
-#FROM nginx:latest
-FROM php:8.1-apache
+FROM nginx:latest
+#FROM php:8.1-apache
 
 ###################################
 # ビルド時にのみ使用する変数定義
