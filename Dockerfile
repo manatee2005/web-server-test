@@ -54,7 +54,7 @@ RUN echo '* * * * * root echo "Hello World at today" >> /root/greetings.txt' >> 
 # CMD ["crond"]
 # CMD ["/etc/init.d/cron","status"]
 # CMD cron && docker-php-entrypoint php-fpm
-CMD cron && docker-php-entrypoint crond
+# CMD cron && docker-php-entrypoint crond
 
 ##################################
 # pnp.ini 変更/追加キー情報反映
