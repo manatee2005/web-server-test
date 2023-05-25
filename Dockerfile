@@ -48,10 +48,13 @@ RUN apt-get update && apt-get install -y \
 # 自動起動設定
 # RUN update-rc.d cron defaults
 
+RUN touch /var/log/cron.log
+
 # test
 RUN echo '* * * * * root echo "Hello World at today" >> /root/greetings.txt' >> /etc/crontab
 
-# CMD ["crond"]
+# CMD ["cron"]
+CMD ["/usr/sbin/cron"]
 # CMD ["/etc/init.d/cron","status"]
 # CMD cron && docker-php-entrypoint php-fpm
 # CMD cron && docker-php-entrypoint crond
