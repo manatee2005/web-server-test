@@ -45,7 +45,7 @@ RUN apt-get update && apt-get install -y \
 # cron
 ###################################
 # 自動起動設定
-RUN update-rc.d cron defaults
+# RUN update-rc.d cron defaults
 
 # test
 RUN echo '* * * * * root echo "Hello World at today" >> /root/greetings.txt' >> /etc/crontab
