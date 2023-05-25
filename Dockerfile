@@ -46,14 +46,14 @@ RUN sed -i -e '/pam_loginuid.so/s/^/#/' /etc/pam.d/cron
 # ADD ./cron.d /etc/cron.d/
 # RUN chmod 0644 /etc/cron.d/*
 
+# test
+RUN echo '* * * * * root echo "Hello World at today" >> /root/greetings.txt' >> /etc/crontab
+
 # suvervisorの設定
 RUN sed -i \
         -e 's/nodaemon=false/nodaemon=true/' \
-        /etc/supervisord.conf
+        /etc/supervisor/supervisord.conf
 ADD ./supervisord /etc/supervisord.d/
 
-CMD ["/usr/bin/supervisord", "-c", "/etc/supervisord.conf"]
+CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/supervisord.conf"]
 # CMD ["/bin/bash"]
-
-# test
-RUN echo '* * * * * root echo "Hello World at today" >> /root/greetings.txt' >> /etc/crontab
