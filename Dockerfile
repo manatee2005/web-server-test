@@ -1,29 +1,61 @@
-; supervisor config file
+FROM php:8.1-apache
+# FROM centos
+# MAINTAINER yuuki.miyo <メールアドレス>
 
-[unix_http_server]
-file=/var/run/supervisor.sock   ; (the path to the socket file)
-chmod=0700                       ; sockef file mode (default 0700)
+# プロキシ設定
+# ARG proxy='http://xxxx:8080'
+# ARG noproxy='xxx,xxx'
+# ENV HTTP_PROXY $proxy
+# ENV HTTPS_PROXY $proxy
+# ENV NO_PROXY $noproxy
+# RUN echo "proxy=$proxy" >> /etc/yum.conf
 
-[supervisord]
-nodaemon=true
-logfile=/var/log/supervisor/supervisord.log ; (main log file;default $CWD/supervisord.log)
-pidfile=/var/run/supervisord.pid ; (supervisord pidfile;default supervisord.pid)
-childlogdir=/var/log/supervisor            ; ('AUTO' child log dir, default $TEMP)
+# タイムゾーン変更
+# RUN cp /usr/share/zoneinfo/Asia/Tokyo /etc/localtime
+ENV TZ=Asia/Tokyo
 
-; the below section must remain in the config file for RPC
-; (supervisorctl/web interface) to work, additional interfaces may be
-; added by defining them in separate rpcinterface: sections
-[rpcinterface:supervisor]
-supervisor.rpcinterface_factory = supervisor.rpcinterface:make_main_rpcinterface
+# yum アップデートとパッケージのインストール
+#RUN yum update -y --disableplugin=fastestmirror && \
+#    yum install -y epel-release --disableplugin=fastestmirror && \
+#    yum install -y --disableplugin=fastestmirror sudo cronie supervisor
+    
+RUN apt-get update && apt-get install -y \
+    libpq-dev \
+    libonig-dev \
+    vim \
+    unzip \
+    git \
+    # cronとtmpreapert、psコマンドを追加
+    cron \
+    tmpreaper \
+    procps \
+    supervisor \
+    # キャッシュされている全パッケージを削除
+    && apt-get clean \
+    # キャッシュされている全パッケージリストを削除
+    && rm -rf /var/lib/apt/lists/*
+# ユーザの追加処理
+# RUN groupadd -g 1000 developer && \
+#     useradd  -g      developer -m -s /bin/bash dev-user && \
+#     echo 'dev-user    ALL=(ALL)    NOPASSWD:ALL' >> /etc/sudoers.d/dev-user
 
-[supervisorctl]
-serverurl=unix:///var/run/supervisor.sock ; use a unix:// URL  for a unix socket
+# PAMの設定
+RUN sed -i -e '/pam_loginuid.so/s/^/#/' /etc/pam.d/cron
 
-; The [include] section can just contain the "files" setting.  This
-; setting can list multiple files (separated by whitespace or
-; newlines).  It can also contain wildcards.  The filenames are
-; interpreted as relative to this file.  Included files *cannot*
-; include files themselves.
+# cronの個別コマンドの設定ファイルを追加
+# ADD ./cron.d /etc/cron.d/
+# RUN chmod 0644 /etc/cron.d/*
 
-[include]
-files = /etc/supervisor/conf.d/*.conf
+# test
+RUN echo '* * * * * root echo "Hello World at today" >> /root/greetings.txt' >> /etc/crontab
+
+# suvervisorの設定
+#RUN sed -i \
+#        -e 's/nodaemon=false/nodaemon=true/' \
+#        /etc/supervisor/supervisord.conf
+
+ADD ./supervisord.conf /etc/supervisor/supervisord.conf
+ADD ./supervisord /etc/supervisor/conf.d/
+
+CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/supervisord.conf"]
+# CMD ["/bin/bash"]
