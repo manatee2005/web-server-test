@@ -1,5 +1,4 @@
-FROM nginx:latest
-#FROM php:8.1-apache
+FROM php:8.1-apache
 
 ###################################
 # ビルド時にのみ使用する変数定義
@@ -51,6 +50,8 @@ RUN apt-get update && apt-get install -y \
 
 # test
 RUN echo '* * * * * root echo "Hello World at today" >> /root/greetings.txt' >> /etc/crontab
+
+CMD ["/usr/sbin/crond"]
 
 ##################################
 # pnp.ini 変更/追加キー情報反映
