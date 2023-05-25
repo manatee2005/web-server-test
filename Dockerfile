@@ -1,10 +1,7 @@
 
 FROM centos
 
-RUN dnf -y install httpd \
-    # cronとtmpreapert、psコマンドを追加
-    cron \
-    procps
+RUN dnf -y install httpd
 RUN echo "Dockerfile Test on Aapche httpd" > /var/www/html/index.html
 
 EXPOSE 80
