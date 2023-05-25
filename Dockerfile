@@ -1,14 +1,7 @@
-
-FROM centos
-
-RUN dnf -y install httpd
-RUN echo "Dockerfile Test on Aapche httpd" > /var/www/html/index.html
+FROM centos:8 
+MAINTAINER name tsuneizumisg@iseto.co.jp
 
 EXPOSE 80
-CMD ["-D", "FOREGROUND"]
-ENTRYPOINT ["/usr/sbin/httpd"]
-ENTRYPOINT ["/usr/sbin/cron"]
 
-
-# test
-RUN echo '* * * * * root echo "Hello World at today" >> /root/greetings.txt' >> /etc/crontab
+RUN dnf install -y nginx 
+CMD ["nginx", "-g", "daemon off;"]
