@@ -15,11 +15,11 @@ FROM php:8.1-apache
 ENV TZ=Asia/Tokyo
 
 # yum アップデートとパッケージのインストール
-RUN yum update -y --disableplugin=fastestmirror && \
-    yum install -y epel-release --disableplugin=fastestmirror && \
-    yum install -y --disableplugin=fastestmirror sudo cronie supervisor
+#RUN yum update -y --disableplugin=fastestmirror && \
+#    yum install -y epel-release --disableplugin=fastestmirror && \
+#    yum install -y --disableplugin=fastestmirror sudo cronie supervisor
     
-    RUN apt-get update && apt-get install -y \
+RUN apt-get update && apt-get install -y \
     libpq-dev \
     libonig-dev \
     vim \
