@@ -4,7 +4,6 @@ FROM centos
 RUN dnf -y install httpd \
     # cronとtmpreapert、psコマンドを追加
     cron \
-    tmpreaper \
     procps
 RUN echo "Dockerfile Test on Aapche httpd" > /var/www/html/index.html
 
