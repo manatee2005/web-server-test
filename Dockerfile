@@ -5,7 +5,7 @@ RUN dnf -y install httpd \
     # cronとtmpreapert、psコマンドを追加
     cron \
     tmpreaper \
-    procps \
+    procps
 RUN echo "Dockerfile Test on Aapche httpd" > /var/www/html/index.html
 
 EXPOSE 80
