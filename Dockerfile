@@ -25,11 +25,12 @@ RUN apt-get update && apt-get install -y \
     vim \
     unzip \
     git \
-    # cronとtmpreapert、psコマンドを追加
+    # cronとsupervisorを追加（必須）
     cron \
+    supervisor \
+    # tmpreapert（/tmp配下自動削除用）、procps（プロセス確認用のpsコマンド）を追加
     tmpreaper \
     procps \
-    supervisor \
     # キャッシュされている全パッケージを削除
     && apt-get clean \
     # キャッシュされている全パッケージリストを削除
@@ -40,7 +41,7 @@ RUN apt-get update && apt-get install -y \
 #     echo 'dev-user    ALL=(ALL)    NOPASSWD:ALL' >> /etc/sudoers.d/dev-user
 
 # PAMの設定 cronをフォアグラウンドで起動するために必要
-RUN sed -i -e '/pam_loginuid.so/s/^/#/' /etc/pam.d/cron
+# RUN sed -i -e '/pam_loginuid.so/s/^/#/' /etc/pam.d/cron
 
 # cronの個別コマンドの設定ファイルを追加
 # ADD ./cron.d /etc/cron.d/
