@@ -2,6 +2,8 @@ FROM php:8.1-apache
 # FROM centos
 # MAINTAINER yuuki.miyo <メールアドレス>
 
+# yumコマンドなどRHEL(CentOS)用のコマンドはコメントアウト
+
 # プロキシ設定
 # ARG proxy='http://xxxx:8080'
 # ARG noproxy='xxx,xxx'
@@ -29,18 +31,20 @@ RUN apt-get update && apt-get install -y \
     cron \
     supervisor \
     # tmpreapert（/tmp配下自動削除用）、procps（プロセス確認用のpsコマンド）を追加
-    tmpreaper \
-    procps \
+    # tmpreaper \
+    # procps \
     # キャッシュされている全パッケージを削除
     && apt-get clean \
     # キャッシュされている全パッケージリストを削除
     && rm -rf /var/lib/apt/lists/*
+
 # ユーザの追加処理
 # RUN groupadd -g 1000 developer && \
 #     useradd  -g      developer -m -s /bin/bash dev-user && \
 #     echo 'dev-user    ALL=(ALL)    NOPASSWD:ALL' >> /etc/sudoers.d/dev-user
 
-# PAMの設定 cronをフォアグラウンドで起動するために必要
+# PAMの設定 cronをフォアグラウンドで起動するためにpam_loginuid.so行のコメントアウトが必要
+# →古いバージョンでの情報？実機ではコメントアウトは不要で動作したため、以下は動作させないでおく
 # RUN sed -i -e '/pam_loginuid.so/s/^/#/' /etc/pam.d/cron
 
 # cronの個別コマンドの設定ファイルを追加
@@ -50,7 +54,7 @@ RUN apt-get update && apt-get install -y \
 # cron動作テスト
 RUN echo '* * * * * root echo "Hello World at today" >> /root/greetings.txt' >> /etc/crontab
 
-# suvervisorの設定
+# suvervisorの設定　設定ファイルは予め編集してADDする
 #RUN sed -i \
 #        -e 's/nodaemon=false/nodaemon=true/' \
 #        /etc/supervisor/supervisord.conf
