@@ -27,7 +27,6 @@ RUN apt-get update && apt-get install -y \
     vim \
     unzip \
     git \
-    psmisc \
     # cronとsupervisorを追加（必須）
     cron \
     supervisor \
